@@ -7,11 +7,11 @@ for n in range(0, len(student_heights)):
   student_heights[n] = int(student_heights[n])
 
 sum_height = 0
-countItmes = 0
+count_itmes = 0
 for student_height in student_heights:
     sum_height += student_height
-    countItmes += 1
+    count_itmes += 1
 
-average = sum_height / countItmes
+average = sum_height / count_itmes
 
 print(average)
