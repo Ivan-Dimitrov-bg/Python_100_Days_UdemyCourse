@@ -1,3 +1,4 @@
+from art import logo
 def Calculate(first_number, second_number, operation):
     if operation == "+":
         result = first_number + second_number
