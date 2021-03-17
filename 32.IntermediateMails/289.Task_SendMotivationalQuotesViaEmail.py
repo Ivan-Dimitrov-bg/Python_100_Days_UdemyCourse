@@ -11,7 +11,7 @@ def send_email(subject, msg):
         connection.login(user=my_mail, password=password)
         connection.sendmail(
             from_addr=my_mail,
-            to_addrs="dimitrov.ivan.dimitrov@gmail.com",
+            to_addrs="Some_mail@gmail.com",
             msg=f"{subject}\n\n{msg}"
         )
 
