@@ -2,16 +2,14 @@ from twilio.rest import Client
 import requests
 import os
 
-account_sid = os.environ["account_sid"]
-auth_token = os.environ["auth_token"]
-
-
 LAT_LONG = (42.337158, 23.557369)
 MY_LAT = LAT_LONG[0] # Your latitude
 MY_LONG = LAT_LONG[1] # Your longitude
 
 MY_KEY = os.environ["key_weather"]
 
+account_sid = os.environ["account_sid"]
+auth_token = os.environ["auth_token"]
 
 params={
     "lat":MY_LAT,
@@ -19,7 +17,6 @@ params={
     "exclude": "current,minutely,daily",
     "appid":MY_KEY
 }
-
 
 data = requests.get("https://api.openweathermap.org/data/2.5/onecall", params=params)
 data.raise_for_status()
@@ -39,8 +36,8 @@ if it_will_rain:
     client = Client(account_sid, auth_token)
     message = client.messages \
         .create(
-        body="It's going to rain today. Remember to bring an umbrella ☂ ",
-        from_='+19094130695',
-        to='+359882228275'
+        body=" ",
+        from_=os.environ["Tel_Send"],
+        to=os.environ["Tel_Mine"],
     )
     print(message.status)
