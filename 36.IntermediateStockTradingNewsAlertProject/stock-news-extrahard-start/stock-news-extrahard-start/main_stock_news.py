@@ -8,9 +8,7 @@ import smtplib
 STOCK = "TSLA"
 COMPANY_NAME = "Tesla Inc"
 PRECENTEGE_CONSTANT = 0.1
-## STEP 1: Use https://www.alphavantage.co
-# When STOCK price increase/decreases by 5% between yesterday and the day
-# before yesterday then print("Get News").
+
 
 account_sid = os.environ["account_sid"]
 auth_token = os.environ["auth_token"]
@@ -22,12 +20,6 @@ email_from = os.environ["email_from"]
 email_to = os.environ["email_to"]
 email_pass = os.environ["email_pass"]
 
-
-
-
-
-my_email = "some_email@gmail.com"
-password = "dfa;sfa23dsfs"
 
 
 #Optional: Format the SMS message like this:
@@ -55,7 +47,9 @@ def format_for_mail(all_news: [], precent_increase: float) -> str:
         date_time = parse(all_news[i][2]).strftime('%Y-%m-%d %H:%M')
         body_formated = body_formated + f"TSLA: {symbol}{round(precent_increase, 0)}% \n Headline:{date_time} - {all_news[i][0]}  \n Brief: {all_news[i][1]} \n URL:{all_news[i][3]} \n"
     return body_formated
-
+## STEP 4:
+# Send a Mail message with the percentage change and each article's title and
+# description to your phone number.
 def send_mail(msg: str):
     with smtplib.SMTP("smtp.gmail.com") as connection:
         connection.starttls()
@@ -66,7 +60,9 @@ def send_mail(msg: str):
             msg=f"Subject:stock info{COMPANY_NAME}\n\n {msg}"
         )
 
-
+## STEP 3: Use https://www.twilio.com
+# Send a seperate message with the percentage change and each article's title and
+# description to your phone number.
 def send_message(all_news: str):
     client = Client(account_sid, auth_token)
     message = client.messages \
@@ -101,9 +97,11 @@ def get_news()->[]:
         all_news.append((title, description, publishedAt, url))
     return all_news
 
-## STEP 3: Use https://www.twilio.com
-# Send a seperate message with the percentage change and each article's title and
-# description to your phone number.
+
+
+## STEP 1: Use https://www.alphavantage.co
+# When STOCK price increase/decreases by 5% between yesterday and the day
+# before yesterday then print("Get News").
 def get_stock_info()->tuple:
     diff_present = 0
 
