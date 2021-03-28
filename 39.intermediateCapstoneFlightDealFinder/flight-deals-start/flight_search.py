@@ -5,6 +5,8 @@ TEQUILA_ENDPOINT = "https://tequila-api.kiwi.com"
 TEQUILA_API_KEY = os.environ["tequila_key"]
 
 class FlightSearch:
+    def __init(self):
+        pass
 
     def get_destination_code(self, city_name):
         location_endpoint = f"{TEQUILA_ENDPOINT}/locations/query"
