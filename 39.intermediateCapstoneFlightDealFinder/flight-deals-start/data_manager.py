@@ -24,26 +24,28 @@ class DataManager:
         # pprint(data)
         return self.destination_data
 
-    def update_destination_codes(self):
-        flight_search = FlightSearch()
+    def update_destination_codes(self, city_name):
         for city in self.destination_data:
-            headers_params = {
-                "Authorization": f"Bearer {self.token_sh}",
-                "Content-Type": "application/json",
+           if city["city"] == city_name:
+                headers_params = {
+                    "Authorization": f"Bearer {self.token_sh}",
+                    "Content-Type": "application/json",
 
-            }
-            new_data = {
-                "price": {
-                    "iataCode": city["iataCode"]
                 }
+                new_data = {
+                    "price": {
+                        "iataCode": city["iataCode"]
+                    }
+                }
+                response = requests.put(
+                    url=f"{self.url_get}/{city['id']}",
+                    json=new_data,
+                    headers=headers_params,
+                )
+                print(response.text)
 
-            }
-            response = requests.put(
-                url=f"{self.url_get}/{city['id']}",
-                json=new_data,
-                headers=headers_params,
-            )
-            print(response.text)
+
+
 # test
 # data_manager = DataManager()
 # data_manager.get_data()

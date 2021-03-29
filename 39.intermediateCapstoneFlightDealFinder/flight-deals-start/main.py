@@ -1,5 +1,6 @@
 # 4. Pass the data back to the main.py file, so that you can print the data from main.py
 from data_manager import DataManager
+from flight_data import FlightData
 
 data_manager = DataManager()
 sheet_data = data_manager.get_destination_data()
@@ -18,6 +19,10 @@ for row in sheet_data:
         flight_search = FlightSearch()
         row["iataCode"] = flight_search.get_destination_code(row["city"])
         print(sheet_data)
+        data_manager.destination_data = sheet_data
+        data_manager.update_destination_codes(row["city"])
 
-data_manager.destination_data = sheet_data
-data_manager.update_destination_codes()
+
+for row in sheet_data:
+    flight_data = FlightData(row['lowestPrice'], row["iataCode"], row["city"])
+    flight_data.find_the_best_price()
