@@ -1,15 +1,16 @@
 import os
 import requests
+from email_data import EmailData
 
 class DataManager:
-# This class is responsible for talking to the Google Sheet.
-    url_get = os.environ["url_get_sh"]
-    url_post_sh_users = os.environ["url_post_sh_users"]
+
+    url_sh_price = os.environ["url_sh_price"]
+    url_sh_users = os.environ["url_sh_users"]
     token_sh = os.environ["token_sh"]
-    print(url_post_sh_users)
 
     def __init__(self):
         self.destination_data = {}
+        self.emails_data = {}
 
     def get_destination_data(self):
         # 2. Use the Sheety API to GET all the data in that sheet and print it out.
@@ -18,11 +19,9 @@ class DataManager:
             "Content-Type": "application/json",
         }
 
-        response = requests.get(url=self.url_get, headers=headers_params)
+        response = requests.get(url=self.url_sh_price, headers=headers_params)
         data = response.json()
         self.destination_data = data["prices"]
-        # 3. Try importing pretty print and printing the data out again using pprint().
-        # pprint(data)
         return self.destination_data
 
     def update_destination_codes(self, city_name):
@@ -39,7 +38,7 @@ class DataManager:
                     }
                 }
                 response = requests.put(
-                    url=f"{self.url_get}/{city['id']}",
+                    url=f"{self.url_sh_price}/{city['id']}",
                     json=new_data,
                     headers=headers_params,
                 )
@@ -50,7 +49,6 @@ class DataManager:
         headers_params = {
             "Authorization": f"Bearer {self.token_sh}",
             "Content-Type": "application/json",
-
         }
 
         body = {
@@ -61,12 +59,28 @@ class DataManager:
             }
         }
         response = requests.post(
-            url=f'{self.url_post_sh_users}',
+            url=f'{self.url_sh_users}',
             headers=headers_params,
             json=body)
 
         print(response.text)
 
-dataManager = DataManager()
+    def get_mails(self):
+        # 2. Use the Sheety API to GET all the data in that sheet and print it out.
+        headers_params = {
+        "Authorization": f"Bearer {self.token_sh}",
+        "Content-Type": "application/json",
+        }
 
-dataManager.save_user("Ivan", "Dimitrov", "Email")
+        response = requests.get(url=self.url_sh_users, headers=headers_params)
+        data = response.json()
+
+        self.emails_data = data['users']
+
+        return self.emails_data
+
+
+# dataManager = DataManager()
+# dataManager.save_user("Ivan", "Dimitrov", "Email")
+dataManager = DataManager()
+dataManager.get_mails()
